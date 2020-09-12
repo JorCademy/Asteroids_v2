@@ -8,12 +8,12 @@ namespace Tmpl8
 	{
 	public:
 		void DrawSprite(Surface* screen);
-		void ShootBullet(Surface* screen, int speed, float objectRotation);
+		void SetEqualToObject(int object_x, int object_y, int objectRotation);
+		void ShootBullet(Surface* screen, int speed);
 		bool CheckOutOfFrame();
 
 		int m_bulletPosition_x;
 		int m_bulletPosition_y;
 		float m_bulletRotation;
-		bool m_shootPlayerBullet = false;
 	};
 };

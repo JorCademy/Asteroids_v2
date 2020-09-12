@@ -1,11 +1,12 @@
 #include "precomp.h" // include this first in every .cpp file
 #include "player.h"
+#include "bullet.h"
 #include <iostream>
 
 namespace Tmpl8
 {
 	// Player sprite initialization
-	static Sprite playerSprite(new Surface("assets/aagun.tga"), 36);
+	static Sprite playerSprite(new Surface("assets/player-ship-sheet.png"), 36);
 	static int frame = 0;
 
 	/* Make the player Spawn to the opposite border when touching one */
@@ -26,8 +27,6 @@ namespace Tmpl8
 
 	void PlayerShip::RotationManagement(Surface* screen)
 	{
-		std::cout << frameForRotation << std::endl;
-
 		if (movement)
 		{
 			// Generating the new player coordinates
@@ -62,7 +61,7 @@ namespace Tmpl8
 				plot_y -= 1;
 			}
 
-			--frameForRotation * speed;
+			--frameForRotation* speed;
 		}
 		else
 		{
@@ -79,14 +78,11 @@ namespace Tmpl8
 		playerSprite.Draw(screen, position_x, position_y);
 	}
 
-	void PlayerShip::ShootBullet(Surface* screen, int bulletSpeed)
+	void PlayerShip::ShootBullet(Surface* screen)
 	{
-		static Sprite bullet(new Surface("assets/bullet.png"), 1);
-
-		bullet.Draw(screen, bulletPosition_x, bulletPosition_y);
-
-		bulletPosition_x = bulletPosition_x + sin(bulletRotation * (PI / 180)) * speed;
-		bulletPosition_y = bulletPosition_y - cos(bulletRotation * (PI / 180)) * speed;
+		Bullet playerBullet;
+		playerBullet.DrawSprite(screen);
+		playerBullet.m_bulletPosition_x = position_x;
+		playerBullet.m_bulletPosition_y = position_y;
 	}
 };
-

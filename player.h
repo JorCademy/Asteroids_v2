@@ -10,7 +10,7 @@ namespace Tmpl8 {
 		void PlayerBorderCollision();
 		void RotationManagement(Surface* screen);
 		void DrawSprite(Surface* screen);
-		void ShootBullet(Surface* screen, int bulletSpeed);
+		void ShootBullet(Surface* screen);
 		// bool CheckBulletOutOfFrame(int bulletPosition_x, int bulletPosition_y);
 
 		// Player rotation
@@ -26,17 +26,10 @@ namespace Tmpl8 {
 		// Starting Position player
 		int position_x = 100;
 		int position_y = 100;
-		
+
 		// Player movement
 		int speed = 0;
 		bool movement = false; // Letting the player move in the chosen direction
-
-		// Player bullet
-		bool shootPlayerBullet = false;
-		int bulletPosition_x;
-		int bulletPosition_y;
-		int bulletSpeed;
-		float bulletRotation;
 	};
 
 };
