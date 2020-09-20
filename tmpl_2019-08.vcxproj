@@ -224,8 +224,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="asteroid.cpp" />
     <ClCompile Include="bullet.cpp" />
+    <ClCompile Include="enemybullet.cpp" />
+    <ClCompile Include="enemyship.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="surface.cpp" />
     <ClCompile Include="template.cpp">
@@ -233,8 +237,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="asteroid.h" />
     <ClInclude Include="bullet.h" />
+    <ClInclude Include="enemybullet.h" />
+    <ClInclude Include="enemyship.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="precomp.h" />
     <ClInclude Include="surface.h" />

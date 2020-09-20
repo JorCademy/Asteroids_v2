@@ -2,34 +2,38 @@
 #include "game.h";
 #include "surface.h"
 
-namespace Tmpl8 {
-
+namespace Tmpl8
+{
 	class PlayerShip
 	{
 	public:
+		void DrawLives(Surface* screen);
 		void PlayerBorderCollision();
 		void RotationManagement(Surface* screen);
 		void DrawSprite(Surface* screen);
-		void ShootBullet(Surface* screen);
+		void CheckCollision();
 		// bool CheckBulletOutOfFrame(int bulletPosition_x, int bulletPosition_y);
 
 		// Player rotation
-		float rotation = 0;
-		int frameForRotation = 360;
-		bool rotatingToRight = false;
-		bool rotatingToLeft = false;
-
-		// Random values for rotation
-		int plot_x = position_x;
-		int plot_y = position_y;
+		float m_rotation = 0;
+		int m_frameForRotation = 360;
+		bool m_rotatingToRight = false;
+		bool m_rotatingToLeft = false;
 
 		// Starting Position player
-		int position_x = 100;
-		int position_y = 100;
+		int m_position_x = 375;
+		int m_position_y = 200;
 
 		// Player movement
-		int speed = 0;
-		bool movement = false; // Letting the player move in the chosen direction
+		int m_speed = 0;
+		bool m_movement = false; // Letting the player move in the chosen direction
+
+		// Hit by objects trigger variable
+		bool m_hitByAsteroid = false;
+		bool m_hitByEnemyShip = false;
+
+		int m_lives = 3;
+		bool m_GameOver = false;
 	};
 
 };

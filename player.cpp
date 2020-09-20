@@ -1,88 +1,102 @@
 #include "precomp.h" // include this first in every .cpp file
 #include "player.h"
 #include "bullet.h"
-#include <iostream>
 
 namespace Tmpl8
 {
-	// Player sprite initialization
 	static Sprite playerSprite(new Surface("assets/player-ship-sheet.png"), 36);
 	static int frame = 0;
 
-	/* Make the player Spawn to the opposite border when touching one */
+	void PlayerShip::DrawLives(Surface* screen)
+	{
+		static Sprite referencedPlayerSprite(new Surface("assets/player-ship-sheet.png"), 36);
+
+		int sprite_x = 20;
+		int sprite_y = 10;
+
+		for (int i = 0; i < m_lives; i++)
+		{
+			referencedPlayerSprite.Draw(screen, sprite_x, sprite_y);
+			sprite_x += 30;
+		}
+
+		if (m_lives <= 0)
+		{
+			m_GameOver = true;
+		}
+	}
+
 	void PlayerShip::PlayerBorderCollision() {
-		if (position_x <= 0) {
-			position_x = 780;
+		if (m_position_x <= 0) {
+			m_position_x = 780;
 		}
-		else if (position_x >= 780) {
-			position_x = 0;
+		else if (m_position_x >= 780) {
+			m_position_x = 0;
 		}
-		else if (position_y <= 0) {
-			position_y = 550;
+		else if (m_position_y <= 0) {
+			m_position_y = 550;
 		}
-		else if (position_y >= 550) {
-			position_y = 0;
+		else if (m_position_y >= 550) {
+			m_position_y = 0;
 		}
+	}
+
+	void PlayerShip::CheckCollision()
+	{
+		if (m_hitByAsteroid || m_hitByEnemyShip)
+		{
+			m_lives -= 1;
+
+			m_position_x = 375; 
+			m_position_y = 200;
+		}
+
+		m_hitByAsteroid = false;
+		m_hitByEnemyShip = false;
 	}
 
 	void PlayerShip::RotationManagement(Surface* screen)
 	{
-		if (movement)
+		if (m_movement)
 		{
-			// Generating the new player coordinates
 			// Note: I figured this mathematical solution out on my own
-			rotation = 360 + (frameForRotation * 10);
-			position_x = position_x + sin(rotation * (PI / 180)) * speed;
-			position_y = position_y - cos(rotation * (PI / 180)) * speed;
+			m_rotation = 360 + (m_frameForRotation * 10);
+			m_position_x += sin(m_rotation * (PI / 180)) * m_speed;
+			m_position_y -= cos(m_rotation * (PI / 180)) * m_speed;
 		}
-		else if (!movement)
+		else if (!m_movement)
 		{
-			// Stop movement
-			position_x += 0;
-			position_y += 0;
+			m_position_x += 0;
+			m_position_y += 0;
 		}
 
-		if (rotatingToRight) {
-			// Rotating to the right
+		if (m_rotatingToRight) {
 			if (--frame == -1)
 			{
 				frame = 35;
 			}
 
-			++frameForRotation* speed;
+			++m_frameForRotation* m_speed;
 		}
-		else if (rotatingToLeft)
+		else if (m_rotatingToLeft)
 		{
-			// Rotating to the left
 			if (++frame == 36)
 			{
 				frame = 0;
-				plot_x += 1;
-				plot_y -= 1;
 			}
 
-			--frameForRotation* speed;
+			--m_frameForRotation* m_speed;
 		}
 		else
 		{
-			// Stop rotation
 			frame += 0;
-			frameForRotation += 0;
+			m_frameForRotation += 0;
 		}
 	}
 
 	void PlayerShip::DrawSprite(Surface* screen)
 	{
-		// Draw the player sprite
 		playerSprite.SetFrame(frame);
-		playerSprite.Draw(screen, position_x, position_y);
-	}
-
-	void PlayerShip::ShootBullet(Surface* screen)
-	{
-		Bullet playerBullet;
-		playerBullet.DrawSprite(screen);
-		playerBullet.m_bulletPosition_x = position_x;
-		playerBullet.m_bulletPosition_y = position_y;
+		playerSprite.Draw(screen, m_position_x, m_position_y);
 	}
 };

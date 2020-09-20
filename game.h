@@ -15,10 +15,12 @@ namespace Tmpl8 {
 		void KeyUp(int key);
 		void KeyDown(int key);
 		void Start(Surface* screen, float deltaTime);
+		void GameOver(Surface* screen, float deltaTime);
 
 	private:
-		Surface* screen;
 		SDL_Event event;
+		Surface* screen;
+		bool m_GameOver = false;
 	};
 
 }; // namespace Tmpl8

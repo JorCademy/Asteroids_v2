@@ -10,6 +10,10 @@
     </ClCompile>
     <ClCompile Include="player.cpp" />
     <ClCompile Include="bullet.cpp" />
+    <ClCompile Include="asteroid.cpp" />
+    <ClCompile Include="enemyship.cpp" />
+    <ClCompile Include="enemybullet.cpp" />
+    <ClCompile Include="GameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -22,6 +26,10 @@
     <ClInclude Include="precomp.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="bullet.h" />
+    <ClInclude Include="asteroid.h" />
+    <ClInclude Include="enemyship.h" />
+    <ClInclude Include="enemybullet.h" />
+    <ClInclude Include="GameObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">

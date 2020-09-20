@@ -2,132 +2,181 @@
 #include "game.h"
 #include "player.h"
 #include "bullet.h"
+#include "asteroid.h"
+#include "enemyship.h"
+#include "enemybullet.h"
 #include <iostream>
 
 namespace Tmpl8
 {
-	// -----------------------------------------------------------
-	// Initialize the application
-	// -----------------------------------------------------------
-	void Game::Init()
-	{
-
-	}
-
-	// -----------------------------------------------------------
-	// Close down application
-	// -----------------------------------------------------------
-	void Game::Shutdown()
-	{
-
-	}
-
-	// Creating new PlayerShip object
 	PlayerShip player;
 
-	// Instantiate bullet objects
-	Bullet playerBullet1;
-	Bullet playerBullet2;
-	Bullet playerBullet3;
-	Bullet playerBullet4;
-	Bullet playerBullet5;
+	EnemyShip enemyShip;
 
-	bool shootPlayerBullet_1 = false;
-	bool shootPlayerBullet_2 = false;
-	bool shootPlayerBullet_3 = false;
-	bool shootPlayerBullet_4 = false;
-	bool shootPlayerBullet_5 = false;
+	// Bullet playerBullets[5] = { Bullet(player.m_position_x, player.m_position_y, player.m_rotation) };
 
-	// Making array for bullet vectors
-	Bullet playerBullets[5] = { playerBullet1, playerBullet2, playerBullet3, playerBullet4, playerBullet5 };
-	bool shootPlayerBullets[5] = { shootPlayerBullet_1, shootPlayerBullet_2, shootPlayerBullet_3, shootPlayerBullet_4, shootPlayerBullet_5 };
+	Bullet playerBullet = Bullet(player.m_position_x, player.m_position_y, player.m_rotation);
+	bool shootPlayerBullet = false;
 
-	// bool shootPlayerBullet[5] = { false, false, false, false, false };   
+	EnemyBullet enemyBullet;
+	bool shootEnemyBullet = false;
 
-	/* Managing rotation and movement - Trigger */
+	int timer = 0;
+
+	/* Find out how to make dynamic asteroid objects using an array of objects */
+	Asteroid newAsteroid1(0, 0, 0.3, player.m_position_x, player.m_position_y, 40, 40, 3);
+	Asteroid newAsteroid2(1, 1, 0.2, player.m_position_x, player.m_position_y, 40, 40, 2);
+	Asteroid newAsteroid3(2, 2, 0.3, player.m_position_x, player.m_position_y, 40, 40, 2);
+	Asteroid newAsteroid4(0, 3, 0.2, player.m_position_x, player.m_position_y, 40, 40, 3);
+	Asteroid newAsteroid5(1, 4, 0.3, player.m_position_x, player.m_position_y, 40, 40, 3);
+	Asteroid newAsteroid6(2, 5, 0.2, player.m_position_x, player.m_position_y, 40, 40, 2);
+	Asteroid newAsteroid7(0, 6, 0.3, player.m_position_x, player.m_position_y, 40, 40, 3);
+	Asteroid newAsteroid8(1, 7, 0.2, player.m_position_x, player.m_position_y, 40, 40, 2);
+	Asteroid newAsteroid9(0, 8, 0.3, player.m_position_x, player.m_position_y, 40, 40, 3);
+	Asteroid newAsteroid10(1, 9, 0.2, player.m_position_x, player.m_position_y, 40, 40, 2);
+	Asteroid newAsteroid11(2, 10, 0.3, player.m_position_x, player.m_position_y, 40, 40, 2);
+	Asteroid newAsteroid12(0, 11, 0.2, player.m_position_x, player.m_position_y, 40, 40, 3);
+	Asteroid newAsteroid13(1, 12, 0.3, player.m_position_x, player.m_position_y, 40, 40, 3);
+	Asteroid newAsteroid14(2, 13, 0.2, player.m_position_x, player.m_position_y, 40, 40, 2);
+	Asteroid newAsteroid15(0, 0, 0.3, player.m_position_x, player.m_position_y, 40, 40, 3);
+	Asteroid newAsteroid16(1, 1, 0.2, player.m_position_x, player.m_position_y, 40, 40, 2);
+	Asteroid newAsteroid17(2, 2, 0.3, player.m_position_x, player.m_position_y, 40, 40, 3);
+	Asteroid newAsteroid18(0, 3, 0.2, player.m_position_x, player.m_position_y, 40, 40, 2);
+	Asteroid newAsteroid19(1, 4, 0.3, player.m_position_x, player.m_position_y, 40, 40, 3);
+	Asteroid newAsteroid20(2, 5, 0.2, player.m_position_x, player.m_position_y, 40, 40, 2);
+	Asteroid newAsteroid21(0, 6, 0.2, player.m_position_x, player.m_position_y, 40, 40, 3);
+	Asteroid newAsteroid22(1, 7, 0.3, player.m_position_x, player.m_position_y, 40, 40, 3);
+	Asteroid newAsteroid23(2, 8, 0.2, player.m_position_x, player.m_position_y, 40, 40, 2);
+	Asteroid newAsteroid24(0, 9, 0.3, player.m_position_x, player.m_position_y, 40, 40, 3);
+	Asteroid newAsteroid25(1, 10, 0.2, player.m_position_x, player.m_position_y, 40, 40, 2);
+	Asteroid newAsteroid26(2, 11, 0.3, player.m_position_x, player.m_position_y, 40, 40, 3);
+	Asteroid newAsteroid27(0, 12, 0.2, player.m_position_x, player.m_position_y, 40, 40, 2);
+	Asteroid newAsteroid28(1, 13, 0.3, player.m_position_x, player.m_position_y, 40, 40, 3);
+
+	Asteroid asteroidsInScene[28] = {
+		newAsteroid1, newAsteroid2, newAsteroid3, newAsteroid4,
+		newAsteroid5, newAsteroid6, newAsteroid7, newAsteroid8,
+		newAsteroid9, newAsteroid10, newAsteroid11, newAsteroid12,
+		newAsteroid13, newAsteroid14, newAsteroid15, newAsteroid16, 
+		newAsteroid17, newAsteroid18, newAsteroid19, newAsteroid20, 
+		newAsteroid21, newAsteroid22, newAsteroid23, newAsteroid24, 
+		newAsteroid25, newAsteroid26, newAsteroid27, newAsteroid28
+	};
+
+	/*
+	Asteroid* asteroidsInScene[2] = {
+		new Asteroid(2, 2, 0.2, player.m_position_x, player.m_position_y, 40, 40, 2), 
+		new Asteroid(1, 1, 0.3, player.m_position_x, player.m_position_y, 40, 40, 1)
+	};
+	*/
+
+	void Game::Init()
+	{
+		int coordinate_index = 0;
+		int angle_index = 0;
+		float speed_offset = 0.02;
+		int asteroid_size = 0;
+
+		int sizes[3] = { 1, 2, 3 };
+
+		/*
+		for (int i = 0; i < sizeof(asteroidsInScene - 1); i++)
+		{
+			coordinate_index += 3;
+			asteroid_size++;
+			speed_offset++;
+			angle_index++;
+
+			if (coordinate_index > 13)
+			{
+				coordinate_index = 0;
+			}
+
+			if (asteroid_size > 3)
+			{
+				asteroid_size = 1;
+			}
+
+			if (speed_offset > 0.03)
+			{
+				speed_offset = 0.02;
+			}
+
+			if (angle_index > 3)
+			{
+				angle_index = 0;
+			}
+
+			// asteroidsInScene[i] = Asteroid(angle_index, coordinate_index, speed_offset, player.m_position_x, player.m_position_y, 40, 40, asteroid_size);
+		}
+		*/
+	}
+
+
+	void Game::Shutdown()
+	{}
+
 	void Game::KeyDown(int key)
 	{
-		if (key == 79) // Start rotating to the right
+		if (key == 79) 
 		{
-			player.rotatingToRight = true;
+			player.m_rotatingToRight = true;
 		}
-		else if (key == 80) // Start rotating to the left
+		else if (key == 80) 
 		{
-			player.rotatingToLeft = true;
+			player.m_rotatingToLeft = true;
 		}
-		else if (key == 82) // Start moving in the chosen direction
+		else if (key == 82) 
 		{
-			player.movement = true;
+			player.m_movement = true;
 		}
 		else if (key == 44)
 		{
-			/*
-			for (int i = 0; i < sizeof(shootPlayerBullets); i++)
+			if (m_GameOver)
 			{
-				if (shootPlayerBullets[i] == false)
-				{
-					shootPlayerBullets[i];
-					break;
-				}
-				else if (shootPlayerBullets[i] == true)
-				{
-					continue;
-				}
+				player.m_lives = 3;
+				player.m_GameOver = false;
+				m_GameOver = false;
 			}
-			*/
-
-			// Decide which bullet to shoot
-			if (shootPlayerBullet_1 == false)
+			else
 			{
-				shootPlayerBullet_1 = true;
+				shootPlayerBullet = true;
 			}
-			/*
-			else if (shootPlayerBullet_2 == false)
-			{
-				shootPlayerBullet_2 = true;
-			}
-			else if (shootPlayerBullet_3 == false)
-			{
-				shootPlayerBullet_3 = true;
-			}
-			else if (shootPlayerBullet_4 == false)
-			{
-				shootPlayerBullet_4 = true;
-			}
-			else if (shootPlayerBullet_5 == false)
-			{
-				shootPlayerBullet_5 = true;
-			}
-			*/
 		}
 	}
 
-	/* Managing rotation and movement - Trigger */
 	void Game::KeyUp(int key)
 	{
-		if (key == 79) // Stop rotating to the right
+		if (key == 79) 
 		{
-			player.rotatingToRight = false;
+			player.m_rotatingToRight = false;
 		}
-		else if (key == 80) // Stop rotating to the left
+		else if (key == 80)
 		{
-			player.rotatingToLeft = false;
+			player.m_rotatingToLeft = false;
 		}
-		if (key == 82) // Stop moving in the chosen direction
+		if (key == 82) 
 		{
-			player.movement = false;
+			player.m_movement = false;
+		}
+		else if (key == 44)
+		{
+			shootPlayerBullet = false;
 		}
 	}
 
-	// -----------------------------------------------------------
-	// Main application tick function
-	// -----------------------------------------------------------
 	void Game::Tick(float deltaTime)
 	{
-		// Setting the player speed
-		player.speed = deltaTime * 0.3f;
+		for (int i = 0; i < sizeof(asteroidsInScene - 1); i++)
+		{
+			asteroidsInScene[i].m_speed = deltaTime;
+		}
 
-		// Checking for keyboard events
+		timer += deltaTime;
+
+		player.m_speed = deltaTime * 0.3;
+		enemyShip.m_speed = deltaTime * 0.3;
+
 		if (SDL_PollEvent(&event))
 		{
 			if (event.type == SDL_KEYDOWN)
@@ -140,168 +189,91 @@ namespace Tmpl8
 			}
 		}
 
-		// clear the graphics window
+		if (player.m_GameOver)
+		{
+			m_GameOver = true;
+			GameOver(screen, deltaTime);
+		}
+		else
+		{
+			/* A reset function might be neat */
+			Start(screen, deltaTime);
+		}
+	}
+
+	/* Maybe I can divide the code within this function into member functions, 
+	to make the code easier to read */
+	void Game::Start(Surface* screen, float deltaTime)
+	{
 		screen->Clear(0);
 
-		// Draw bullet objects
-
-		/*
-		for (int i = 0; i < sizeof(playerBullets - 1); i++)
+		// Draw Asteroids
+		for (unsigned int i = 0; i < sizeof(asteroidsInScene) / sizeof(asteroidsInScene[0]); i++)
 		{
-			playerBullets[i].DrawSprite(screen);
-		}
-		*/
-
-		playerBullet1.DrawSprite(screen);
-		playerBullet2.DrawSprite(screen);
-		playerBullet3.DrawSprite(screen);
-		playerBullet4.DrawSprite(screen);
-		playerBullet5.DrawSprite(screen);
-		
-		/* Moving the bullets */
-
-		/*
-		for (int i = 0; i < sizeof(shootPlayerBullets); i++)
-		{
-			if (shootPlayerBullets[i] == false)
-			{
-				// Set the bullet's position equal to the player's position
-				playerBullets[i].m_bulletPosition_x = player.position_x;
-				playerBullets[i].m_bulletPosition_y = player.position_y;
-				playerBullets[i].m_bulletRotation = player.frameForRotation;
-
-				continue;
-			}
-			else if (shootPlayerBullets[i] == true)
-			{
-				playerBullets[i].m_bulletPosition_x += sin(playerBullets[i].m_bulletRotation * 10 * (PI / 180)) * deltaTime;
-				playerBullets[i].m_bulletPosition_y -= cos(playerBullets[i].m_bulletRotation * 10 * (PI / 180)) * deltaTime;
-
-				if (playerBullets[i].CheckOutOfFrame())
-				{
-					playerBullets[i].m_bulletPosition_x = player.position_x;
-					playerBullets[i].m_bulletPosition_y = player.position_y;
-				}
-			}
-		}
-		*/
-
-		if (!shootPlayerBullet_1)
-		{
-			playerBullet1.SetEqualToObject(player.position_x, player.position_y, player.frameForRotation);
-
-			/*
-			playerBullet1.m_bulletPosition_x = player.position_x;
-			playerBullet1.m_bulletPosition_y = player.position_y;
-			playerBullet1.m_bulletRotation = player.frameForRotation;
-			*/
-		}
-		else if (shootPlayerBullet_1)
-		{
-			playerBullet1.ShootBullet(screen, deltaTime);
-			/*
-			playerBullet1.m_bulletPosition_x += sin(playerBullet1.m_bulletRotation * 10 * (PI / 180)) * deltaTime;
-			playerBullet1.m_bulletPosition_y -= cos(playerBullet1.m_bulletRotation * 10 * (PI / 180)) * deltaTime;
-			*/
-			if (playerBullet1.CheckOutOfFrame())
-			{
-				playerBullet1.m_bulletPosition_x = player.position_x;
-				playerBullet1.m_bulletPosition_y = player.position_y;
-
-				shootPlayerBullet_1 = false;
-			}
+			asteroidsInScene[i].DrawSprite(screen);
+			asteroidsInScene[i].Movement();
+			asteroidsInScene[i].RotationSprite();
 		}
 
-		/*
-		if (!shootPlayerBullet_2)
-		{
-			playerBullet2.m_bulletPosition_x = player.position_x;
-			playerBullet2.m_bulletPosition_y = player.position_y;
-			playerBullet2.m_bulletRotation = player.frameForRotation;
-		}
-		else if (shootPlayerBullet_2)
-		{
-			playerBullet2.m_bulletPosition_x += sin(playerBullet2.m_bulletRotation * 10 * (PI / 180)) * deltaTime;
-			playerBullet2.m_bulletPosition_y -= cos(playerBullet2.m_bulletRotation * 10 * (PI / 180)) * deltaTime;
+		player.DrawLives(screen);
 
-			if (playerBullet2.CheckOutOfFrame())
-			{
-				playerBullet2.m_bulletPosition_x = player.position_x;
-				playerBullet2.m_bulletPosition_y = player.position_y;
+		playerBullet.DrawSprite(screen, "assets/bullet.png", playerBullet.m_bulletPosition_x, playerBullet.m_bulletPosition_y);
+		playerBullet.ShootBullet(screen, deltaTime, player.m_position_x, player.m_position_y, player.m_frameForRotation, shootPlayerBullet);
 
-				shootPlayerBullet_2 = false;
-			}
+		enemyBullet.DrawSprite(screen, "assets/bullet.png", enemyBullet.m_position_x, enemyBullet.m_position_y);
+		enemyBullet.ShootBullet(screen, deltaTime, enemyShip.m_position_x, enemyShip.m_position_y, shootEnemyBullet);
+
+		// Timer Management
+		if (timer > 15000)
+		{
+			enemyShip.startMoving = true;
+			enemyBullet.enemyShip_moving = true;
+
+			timer = 0;
 		}
 
-		if (!shootPlayerBullet_3)
-		{
-			playerBullet3.m_bulletPosition_x = player.position_x;
-			playerBullet3.m_bulletPosition_y = player.position_y;
-			playerBullet3.m_bulletRotation = player.frameForRotation;
-		}
-		else if (shootPlayerBullet_3)
-		{
-			playerBullet3.m_bulletPosition_x += sin(playerBullet3.m_bulletRotation * 10 * (PI / 180)) * deltaTime;
-			playerBullet3.m_bulletPosition_y -= cos(playerBullet3.m_bulletRotation * 10 * (PI / 180)) * deltaTime;
+		enemyShip.DrawSprite(screen);
 
-			if (playerBullet2.CheckOutOfFrame())
-			{
-				playerBullet3.m_bulletPosition_x = player.position_x;
-				playerBullet3.m_bulletPosition_y = player.position_y;
+		enemyShip.Movement();
 
-				shootPlayerBullet_3 = false;
-			}
-		}
-
-		if (!shootPlayerBullet_4)
-		{
-			playerBullet4.m_bulletPosition_x = player.position_x;
-			playerBullet4.m_bulletPosition_y = player.position_y;
-			playerBullet4.m_bulletRotation = player.frameForRotation;
-		}
-		else if (shootPlayerBullet_4)
-		{
-			playerBullet4.m_bulletPosition_x += sin(playerBullet4.m_bulletRotation * 10 * (PI / 180)) * deltaTime;
-			playerBullet4.m_bulletPosition_y -= cos(playerBullet4.m_bulletRotation * 10 * (PI / 180)) * deltaTime;
-
-			if (playerBullet4.CheckOutOfFrame())
-			{
-				playerBullet4.m_bulletPosition_x = player.position_x;
-				playerBullet4.m_bulletPosition_y = player.position_y;
-
-				shootPlayerBullet_4 = false;
-			}
-		}
-
-		if (!shootPlayerBullet_5)
-		{
-			playerBullet5.m_bulletPosition_x = player.position_x;
-			playerBullet5.m_bulletPosition_y = player.position_y;
-			playerBullet5.m_bulletRotation = player.frameForRotation;
-		}
-		else if (shootPlayerBullet_5)
-		{
-			playerBullet5.m_bulletPosition_x += sin(playerBullet5.m_bulletRotation * 10 * (PI / 180)) * deltaTime;
-			playerBullet5.m_bulletPosition_y -= cos(playerBullet5.m_bulletRotation * 10 * (PI / 180)) * deltaTime;
-
-			if (playerBullet5.CheckOutOfFrame())
-			{
-				playerBullet5.m_bulletPosition_x = player.position_x;
-				playerBullet5.m_bulletPosition_y = player.position_y;
-
-				shootPlayerBullet_5 = false;
-			}
-		}
-		*/
-
-		// draw a sprite
 		player.DrawSprite(screen);
 
-		/* Managing rotation and movement - Action */
 		player.RotationManagement(screen);
 
-		/* Make the player Spawn to the opposite
-		   border when touching one */
 		player.PlayerBorderCollision();
+
+		// Collision Check
+		player.m_hitByEnemyShip = enemyShip.CollisionDetection(player.m_position_x, player.m_position_y, 40, 40);
+		playerBullet.m_hitByEnemyShip = enemyShip.CollisionDetection(playerBullet.m_bulletPosition_x, playerBullet.m_bulletPosition_y, 30, 30);
+
+		for (unsigned int i = 0; i < sizeof(asteroidsInScene) / sizeof(asteroidsInScene[0]); i = i + 1)
+		{
+			player.m_hitByAsteroid = asteroidsInScene[i].CollisionDetection(player.m_position_x, player.m_position_y, 40, 40);
+			playerBullet.m_hitByAsteroid = asteroidsInScene[i].CollisionDetection(playerBullet.m_bulletPosition_x, playerBullet.m_bulletPosition_y, 30, 30);
+			asteroidsInScene[i].HitByPlayer();
+
+			if (asteroidsInScene[i].CollisionDetection(player.m_position_x, player.m_position_y, 40, 40))
+			{
+				printf("Asteroid hit");
+				player.m_lives -= 1;
+			}
+
+			/* Still have to make sure that the bullet spawns back to the player's position
+			when it has hit an object */
+		}
+
+		player.CheckCollision();
+		playerBullet.CheckCollision();
+
+		enemyShip.HitByPlayer();
+	}
+
+	void Game::GameOver(Surface* screen, float deltaTime)
+	{
+		screen->Clear(0);
+
+		/* Making the Game Over message appear (maybe by using a sprite first) */
+		screen->Print("Game Over!", 400, 250, 0xffffff);
+		screen->Print("Press SPACE to play again!", 350, 300, 0xffffff);
 	}
 };

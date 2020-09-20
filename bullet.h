@@ -7,13 +7,21 @@ namespace Tmpl8
 	class Bullet
 	{
 	public:
-		void DrawSprite(Surface* screen);
-		void SetEqualToObject(int object_x, int object_y, int objectRotation);
-		void ShootBullet(Surface* screen, int speed);
-		bool CheckOutOfFrame();
+		Bullet();
+		Bullet(int object_x, int object_y, float objectRotation);
+		void DrawSprite(Surface* screen, char* fileName, int bulletPosition_x, int bulletPosition_y);
+		void virtual SetEqualToObject(int object_x, int object_y, int objectRotation);
+		void virtual ShootBullet(Surface* screen, int speed, int object_x, int object_y, int objectRotation, bool shootObjectBullet);
+		bool CheckOutOfFrame(int bulletPosition_x, int bulletPosition_y);
+		void CheckCollision();
 
 		int m_bulletPosition_x;
 		int m_bulletPosition_y;
+		int m_player_x;
+		int m_player_y;
+		int m_player_rotation;
 		float m_bulletRotation;
+		bool m_hitByEnemyShip;
+		bool m_hitByAsteroid;
 	};
 };
