@@ -1,10 +1,11 @@
 #pragma once
 #include "game.h";
 #include "surface.h"
+#include "GameObject.h"
 
 namespace Tmpl8
 {
-	class PlayerShip
+	class PlayerShip : public GameObject
 	{
 	public:
 		void DrawLives(Surface* screen);
@@ -12,25 +13,26 @@ namespace Tmpl8
 		void RotationManagement(Surface* screen);
 		void DrawSprite(Surface* screen);
 		void CheckCollision();
-		// bool CheckBulletOutOfFrame(int bulletPosition_x, int bulletPosition_y);
 
-		// Player rotation
+		/* Still have to initialize this function (for multiple classes as well) */
+		// virtual void Reset();
+		
+		int m_score = 0;
+
 		float m_rotation = 0;
 		int m_frameForRotation = 360;
 		bool m_rotatingToRight = false;
 		bool m_rotatingToLeft = false;
 
-		// Starting Position player
 		int m_position_x = 375;
 		int m_position_y = 200;
 
-		// Player movement
 		int m_speed = 0;
-		bool m_movement = false; // Letting the player move in the chosen direction
+		bool m_movement = false; 
 
-		// Hit by objects trigger variable
 		bool m_hitByAsteroid = false;
 		bool m_hitByEnemyShip = false;
+		bool m_hitByEnemyBullet = false;
 
 		int m_lives = 3;
 		bool m_GameOver = false;

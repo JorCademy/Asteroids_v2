@@ -35,33 +35,17 @@ namespace Tmpl8
 			m_bulletPosition_x += sin(m_bulletRotation * 10 * (PI / 180)) * speed;
 			m_bulletPosition_y -= cos(m_bulletRotation * 10 * (PI / 180)) * speed;
 		}
-		else if (shootObjectBullet == true && this->CheckOutOfFrame(m_bulletPosition_x, m_bulletPosition_y) == false)
+		else if (shootObjectBullet == true && this->CheckOutOfFrame(m_bulletPosition_x, m_bulletPosition_y, m_playerBulletOutOfFrame) == false)
 		{
 			m_bulletPosition_x += sin(m_bulletRotation * 10 * (PI / 180)) * speed;
 			m_bulletPosition_y -= cos(m_bulletRotation * 10 * (PI / 180)) * speed;
 		}
-		else if (shootObjectBullet == true && this->CheckOutOfFrame(m_bulletPosition_x, m_bulletPosition_y) == true)
+		else if (shootObjectBullet == true && this->CheckOutOfFrame(m_bulletPosition_x, m_bulletPosition_y, m_playerBulletOutOfFrame) == true)
 		{
 			this->SetEqualToObject(object_x, object_y, objectRotation);
 			m_bulletPosition_x += 0;
 			m_bulletPosition_y -= 0;
 		}
-	}
-
-	bool Bullet::CheckOutOfFrame(int bulletPosition_x, int bulletPosition_y)
-	{
-		bool bulletOutOfFrame;
-
-		if (bulletPosition_x < 0 || bulletPosition_x > 850 || bulletPosition_y < 0 || bulletPosition_y > 550)
-		{
-			bulletOutOfFrame = true;
-		}
-		else
-		{
-			bulletOutOfFrame = false;
-		}
-
-		return bulletOutOfFrame;
 	}
 
 	void Bullet::CheckCollision()

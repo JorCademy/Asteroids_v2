@@ -146,26 +146,19 @@ namespace Tmpl8
 		}
 	}
 
-	// Temporary function for analyzing the asteroid's behaviour
-	bool Asteroid::CheckOutOfFrame()
-	{
-		bool asteroidOutOfFrame;
-
-		if (m_position_x < -50 || m_position_x > 850 || m_position_y < -50 || m_position_y > 550)
-		{
-			asteroidOutOfFrame = true;
-		}
-		else
-		{
-			asteroidOutOfFrame = false;
-		}
-
-		return asteroidOutOfFrame;
-	}
-
 	/*
 	Referenced AABB from Stackoverflow: https://stackoverflow.com/questions/6083626/box-collision-code
 	*/
+
+	void Asteroid::HitByPlayer()
+	{
+		if (collisionDetected)
+		{
+			SettingRandomStartingPosition();
+			/* Split (somehow) or move to a location outside of the player's view */
+		}
+	}
+
 	bool Asteroid::CollisionDetection(int player_x, int player_y, int playerWidth, int playerHeight)
 	{
 		collisionDetected = false;
@@ -183,18 +176,9 @@ namespace Tmpl8
 		if (!((asteroid_x_max < player_x_min || asteroid_x_min > player_x_max) || ((asteroid_y_max < player_y_min) || (asteroid_y_min > player_y_max))))
 		{
 			collisionDetected = true;
-		} 
+		}
 
 		return collisionDetected;
-	}
-
-	void Asteroid::HitByPlayer()
-	{
-		if (collisionDetected)
-		{
-			SettingRandomStartingPosition();
-			/* Split (somehow) or move to a location outside of the player's view */
-		}
 	}
 
 	Asteroid::~Asteroid()

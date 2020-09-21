@@ -1,20 +1,22 @@
 #pragma once
 #include "game.h";
 #include "surface.h"
+#include "GameObject.h"
 
 namespace Tmpl8
 {
-	class Bullet
+	class Bullet : public GameObject
 	{
 	public:
 		Bullet();
 		Bullet(int object_x, int object_y, float objectRotation);
-		void DrawSprite(Surface* screen, char* fileName, int bulletPosition_x, int bulletPosition_y);
+		void virtual DrawSprite(Surface* screen, char* fileName, int bulletPosition_x, int bulletPosition_y);
 		void virtual SetEqualToObject(int object_x, int object_y, int objectRotation);
 		void virtual ShootBullet(Surface* screen, int speed, int object_x, int object_y, int objectRotation, bool shootObjectBullet);
-		bool CheckOutOfFrame(int bulletPosition_x, int bulletPosition_y);
+		// bool CheckOutOfFrame(int bulletPosition_x, int bulletPosition_y);
 		void CheckCollision();
 
+		bool m_playerBulletOutOfFrame;
 		int m_bulletPosition_x;
 		int m_bulletPosition_y;
 		int m_player_x;

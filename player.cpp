@@ -26,21 +26,6 @@ namespace Tmpl8
 		}
 	}
 
-	void PlayerShip::PlayerBorderCollision() {
-		if (m_position_x <= 0) {
-			m_position_x = 780;
-		}
-		else if (m_position_x >= 780) {
-			m_position_x = 0;
-		}
-		else if (m_position_y <= 0) {
-			m_position_y = 550;
-		}
-		else if (m_position_y >= 550) {
-			m_position_y = 0;
-		}
-	}
-
 	void PlayerShip::CheckCollision()
 	{
 		if (m_hitByAsteroid || m_hitByEnemyShip)
@@ -53,6 +38,26 @@ namespace Tmpl8
 
 		m_hitByAsteroid = false;
 		m_hitByEnemyShip = false;
+	}
+
+	void PlayerShip::PlayerBorderCollision() 
+	{
+		if (m_position_x <= 0) 
+		{
+			m_position_x = 780;
+		}
+		else if (m_position_x >= 780) 
+		{
+			m_position_x = 0;
+		}
+		else if (m_position_y <= 0) 
+		{
+			m_position_y = 550;
+		}
+		else if (m_position_y >= 550) 
+		{
+			m_position_y = 0;
+		}
 	}
 
 	void PlayerShip::RotationManagement(Surface* screen)

@@ -6,11 +6,11 @@
 
 namespace Tmpl8
 {
-	static Sprite enemyShipSprite(new Surface("assets/enemy-ship.png"), 1);
-
 	bool move = false;
 	bool leftSide = false;
 	bool upperSide = false;
+
+	static Sprite enemyShipSprite(new Surface("assets/enemy-ship.png"), 1);
  
 	enum optional_positions_x { LEFT = -40, RIGHT = 840 };
 	enum optional_positions_y { UPPER_SIDE = 150, LOWER_SIDE = 350 };
@@ -46,7 +46,7 @@ namespace Tmpl8
 
 		return startingPosition_y;
 	}
-
+	   
 	void EnemyShip::DrawSprite(Surface* screen) 
 	{
 		enemyShipSprite.Draw(screen, m_position_x, m_position_y);
@@ -59,14 +59,13 @@ namespace Tmpl8
 	variables leftSide and upperSide, more random. IE by using the score of the player
 	in combination with modulus ( if ((score_player % 10) == 0) )
 	*/
-
 	void EnemyShip::Movement()
 	{
 		if (startMoving)
 		{
-			if (!CheckOutOfFrame())
+			if (!CheckOutOfFrame(m_position_x, m_position_y, m_outOfFrame))
 			{
-				if (leftSide && upperSide && !CheckOutOfFrame())
+				if (leftSide && upperSide && !CheckOutOfFrame(m_position_x, m_position_y, m_outOfFrame))
 				{
 					m_position_x += m_speed;
 
@@ -75,7 +74,7 @@ namespace Tmpl8
 						m_position_y += m_speed;
 					}
 				}
-				else if (!leftSide && !upperSide && !CheckOutOfFrame())
+				else if (!leftSide && !upperSide && !CheckOutOfFrame(m_position_x, m_position_y, m_outOfFrame))
 				{
 					m_position_x -= m_speed;
 
@@ -85,7 +84,7 @@ namespace Tmpl8
 					}
 				}
 			}
-			else if (CheckOutOfFrame())
+			else if (CheckOutOfFrame(m_position_x, m_position_y, m_outOfFrame))
 			{
 				if (leftSide == true)
 				{
@@ -111,22 +110,6 @@ namespace Tmpl8
 				startMoving = false;
 			}
 		}
-	}
-
-	bool EnemyShip::CheckOutOfFrame()
-	{
-		bool shipOutOfFrame;
-
-		if (m_position_x < -50 || m_position_x > 850 || m_position_y < -50 || m_position_y > 550)
-		{
-			shipOutOfFrame = true;
-		}
-		else
-		{
-			shipOutOfFrame = false;
-		}
-
-		return shipOutOfFrame;
 	}
 
 	bool EnemyShip::CollisionDetection(int object_x, int object_y, int objectWidth, int objectHeight)

@@ -1,10 +1,11 @@
 #pragma once
 #include "game.h";
 #include "surface.h"
+#include "GameObject.h"
 
 namespace Tmpl8
 {
-	class Asteroid
+	class Asteroid : public GameObject
 	{
 	public:
 		Asteroid();
@@ -14,9 +15,8 @@ namespace Tmpl8
 		void RotationSprite();
 		void CalculatingRotation();
 		void virtual Movement();
-		bool virtual CheckOutOfFrame();
-		bool virtual CollisionDetection(int player_x, int player_y, int playerWidth, int playerHeight);
 		void virtual HitByPlayer();
+		virtual bool CollisionDetection(int player_x, int player_y, int playerWidth, int playerHeight);
 		~Asteroid();
 
 		bool collisionDetected = false;
@@ -25,12 +25,12 @@ namespace Tmpl8
 		int m_asteroid_HEIGHT;
 		int m_position_x;
 		int m_position_y;
+		int m_size;
 
 	private:
 		int m_asteroidFrame = 0;
 		int m_asteroidSpeed;
 		float m_rotation;
-		int m_size;
 		int m_angle_index;
 		int m_coordinate_index;
 		float m_speed_offset;

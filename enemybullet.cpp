@@ -22,29 +22,29 @@ namespace Tmpl8
 		m_position_y = player_y;
 	}
 
-	void EnemyBullet::ShootBullet(Surface* screen, int speed, int object_x, int object_y, bool enemyShip_moving)
+	void EnemyBullet::ShootBullet(Surface* screen, int speed, int object_x, int object_y)
 	{
-		if (enemyShip_moving)
+		if (m_enemyShip_moving)
 		{
 			this->Rotation(object_x, object_y);
 
-			if (this->CheckOutOfFrame(m_position_x, m_position_y))
+			if (this->CheckOutOfFrame(m_position_x, m_position_y, m_enemyBulletOutOfFrame))
 			{
 				angle_iterator += 1;
 			}
 
 			// Shoot bullet in direction of the player
-			if (enemyShip_moving == false)
+			if (m_enemyShip_moving == false)
 			{
 				m_position_x += sin(m_rotation * 100 * (PI / 180)) * speed;
 				m_position_y -= cos(m_rotation * 100 * (PI / 180)) * speed;
 			}
-			else if (enemyShip_moving == true && this->CheckOutOfFrame(m_position_x, m_position_y) == false)
+			else if (m_enemyShip_moving == true && this->CheckOutOfFrame(m_position_x, m_position_y, m_enemyBulletOutOfFrame) == false)
 			{
 				m_position_x += sin(m_rotation * 100 * (PI / 180)) * speed;
 				m_position_y -= cos(m_rotation * 100 * (PI / 180)) * speed;
 			}
-			else if (enemyShip_moving == true && this->CheckOutOfFrame(m_position_x, m_position_y) == true)
+			else if (m_enemyShip_moving == true && this->CheckOutOfFrame(m_position_x, m_position_y, m_enemyBulletOutOfFrame) == true)
 			{
 				this->SetEqualToObject(object_x, object_y);
 				m_position_x += 0;
@@ -55,5 +55,16 @@ namespace Tmpl8
 		{
 			this->SetEqualToObject(object_x, object_y);
 		}
+	}
+
+	void EnemyBullet::CheckCollision(int enemyShip_x, int enemyShip_y)
+	{
+		if (m_hitByPlayer)
+		{
+			m_position_x = enemyShip_x;
+			m_position_y = enemyShip_y;
+		}
+
+		m_hitByPlayer = false;
 	}
 }

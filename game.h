@@ -15,7 +15,12 @@ namespace Tmpl8 {
 		void KeyUp(int key);
 		void KeyDown(int key);
 		void Start(Surface* screen, float deltaTime);
+		void DisplayScore(Surface* screen);
+		void DrawAsteroids();
+		void TimerManagement();
+		void CollisionCheck();
 		void GameOver(Surface* screen, float deltaTime);
+		void Reset(Surface* screen);
 
 	private:
 		SDL_Event event;

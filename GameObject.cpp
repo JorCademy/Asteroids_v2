@@ -46,11 +46,7 @@ namespace Tmpl8
 		return trigger;
 	}
 
-	void GameObject::HitByPlayer(bool collisionDetected) 
-	{
-		if (collisionDetected)
-		{
-			// Setting to starting position
-		}
-	}
+	void GameObject::HitByPlayer(bool collisionDetected) {}
+
+	void GameObject::Reset() {}
 }
