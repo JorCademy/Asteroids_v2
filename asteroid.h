@@ -17,20 +17,16 @@ namespace Tmpl8
 		void virtual Movement();
 		void virtual HitByPlayer();
 		virtual bool CollisionDetection(int player_x, int player_y, int playerWidth, int playerHeight);
+		virtual void Reset();
 		~Asteroid();
 
-		bool collisionDetected = false;
-		int m_speed;
-		int m_asteroid_WIDTH;
-		int m_asteroid_HEIGHT;
-		int m_position_x;
-		int m_position_y;
+		bool m_collisionDetected = false;
 		int m_size;
+		enum m_sizes { SMALL = 1, MEDIUM = 2, BIG = 3 };
 
 	private:
 		int m_asteroidFrame = 0;
 		int m_asteroidSpeed;
-		float m_rotation;
 		int m_angle_index;
 		int m_coordinate_index;
 		float m_speed_offset;

@@ -6,6 +6,10 @@
 
 namespace Tmpl8
 {
+	EnemyBullet::EnemyBullet() {}
+
+	EnemyBullet::~EnemyBullet() {}
+
 	void EnemyBullet::Rotation(int player_x, int player_y)
 	{
 		/*
@@ -13,7 +17,7 @@ namespace Tmpl8
 		*/
 		int optional_angles[5] = { 250, 100, 80, 40, 300 };
 
-		m_rotation = optional_angles[angle_iterator];
+		m_rotation = optional_angles[m_angle_iterator];
 	}
 
 	void EnemyBullet::SetEqualToObject(int player_x, int player_y)
@@ -30,7 +34,7 @@ namespace Tmpl8
 
 			if (this->CheckOutOfFrame(m_position_x, m_position_y, m_enemyBulletOutOfFrame))
 			{
-				angle_iterator += 1;
+				m_angle_iterator += 1;
 			}
 
 			// Shoot bullet in direction of the player

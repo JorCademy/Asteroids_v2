@@ -5,9 +5,9 @@
 
 namespace Tmpl8
 {
-	static Sprite asteroidSprite_small(new Surface("assets/small-asteroid-sheet.png"), 36);
-	static Sprite asteroidSprite_medium(new Surface("assets/medium-asteroid-sheet.png"), 36);
-	static Sprite asteroidSprite_big(new Surface("assets/big-asteroid-sheet.png"), 36);
+	static Sprite s_asteroidSprite_small(new Surface("assets/small-asteroid-sheet.png"), 36);
+	static Sprite s_asteroidSprite_medium(new Surface("assets/medium-asteroid-sheet.png"), 36);
+	static Sprite s_asteroidSprite_big(new Surface("assets/big-asteroid-sheet.png"), 36);
 
 	Asteroid::Asteroid()
 	{}
@@ -57,30 +57,29 @@ namespace Tmpl8
 
 	void Asteroid::DrawSprite(Surface* screen)
 	{	
-		// Draw the player sprite
-		if (m_size == 1)
+		if (m_size == SMALL)
 		{
-			m_asteroid_WIDTH = 14;
-			m_asteroid_HEIGHT = 14;
+			m_WIDTH = 24;
+			m_HEIGHT = 24;
 
-			asteroidSprite_small.SetFrame(m_asteroidFrame);
-			asteroidSprite_small.Draw(screen, m_position_x, m_position_y);
+			s_asteroidSprite_small.SetFrame(m_asteroidFrame);
+			s_asteroidSprite_small.Draw(screen, m_position_x, m_position_y);
 		}
-		else if (m_size == 2)
+		else if (m_size == MEDIUM)
 		{
-			m_asteroid_WIDTH = 28;
-			m_asteroid_HEIGHT = 28;
+			m_WIDTH = 39;
+			m_HEIGHT = 39;
 
-			asteroidSprite_medium.SetFrame(m_asteroidFrame);
-			asteroidSprite_medium.Draw(screen, m_position_x, m_position_y);
+			s_asteroidSprite_medium.SetFrame(m_asteroidFrame);
+			s_asteroidSprite_medium.Draw(screen, m_position_x, m_position_y);
 		}
-		else if (m_size == 3)
+		else if (m_size == BIG)
 		{
-			m_asteroid_WIDTH = 40;
-			m_asteroid_HEIGHT = 40;
+			m_WIDTH = 60;
+			m_HEIGHT = 60;
 
-			asteroidSprite_big.SetFrame(m_asteroidFrame);
-			asteroidSprite_big.Draw(screen, m_position_x, m_position_y);
+			s_asteroidSprite_big.SetFrame(m_asteroidFrame);
+			s_asteroidSprite_big.Draw(screen, m_position_x, m_position_y);
 		}
 	}
 
@@ -104,15 +103,18 @@ namespace Tmpl8
 		{
 			m_rotation = optional_angles_upperleft[m_angle_index];
 		}
-		else if (m_position_x < 400 && m_position_y > 250)
+		
+		if (m_position_x < 400 && m_position_y > 250)
 		{
 			m_rotation = optional_angles_lowerleft[m_angle_index];
 		}
-		else if (m_position_x > 400 && m_position_y < 250)
+		
+		if (m_position_x > 400 && m_position_y < 250)
 		{
 			m_rotation = optional_angles_upperright[m_angle_index];
 		}
-		else if (m_position_x > 400 && m_position_y > 250) 
+		
+		if (m_position_x > 400 && m_position_y > 250) 
 		{
 			m_rotation = optional_angles_lowerright[m_angle_index];
 		}
@@ -123,7 +125,7 @@ namespace Tmpl8
 		m_position_x += sin(m_rotation * 100 * (PI / 180)) * m_speed * m_speed_offset;
 		m_position_y -= cos(m_rotation * 100 * (PI / 180)) * m_speed * m_speed_offset;
 
-		if (collisionDetected)
+		if (m_collisionDetected)
 		{
 			SettingRandomStartingPosition();
 		}
@@ -149,10 +151,9 @@ namespace Tmpl8
 	/*
 	Referenced AABB from Stackoverflow: https://stackoverflow.com/questions/6083626/box-collision-code
 	*/
-
 	void Asteroid::HitByPlayer()
 	{
-		if (collisionDetected)
+		if (m_collisionDetected)
 		{
 			SettingRandomStartingPosition();
 			/* Split (somehow) or move to a location outside of the player's view */
@@ -161,12 +162,12 @@ namespace Tmpl8
 
 	bool Asteroid::CollisionDetection(int player_x, int player_y, int playerWidth, int playerHeight)
 	{
-		collisionDetected = false;
+		m_collisionDetected = false;
 
 		int asteroid_x_min = m_position_x;
-		int asteroid_x_max = m_position_x + m_asteroid_WIDTH;
+		int asteroid_x_max = m_position_x + m_WIDTH;
 		int asteroid_y_min = m_position_y;
-		int asteroid_y_max = m_position_y + m_asteroid_HEIGHT;
+		int asteroid_y_max = m_position_y + m_HEIGHT;
 
 		int player_x_min = player_x;
 		int player_x_max = player_x + playerWidth;
@@ -175,10 +176,16 @@ namespace Tmpl8
 
 		if (!((asteroid_x_max < player_x_min || asteroid_x_min > player_x_max) || ((asteroid_y_max < player_y_min) || (asteroid_y_min > player_y_max))))
 		{
-			collisionDetected = true;
+			m_collisionDetected = true;
 		}
 
-		return collisionDetected;
+		return m_collisionDetected;
+	}
+
+	void Asteroid::Reset()
+	{
+		m_position_x = m_start_x;
+		m_position_y = m_start_y;
 	}
 
 	Asteroid::~Asteroid()

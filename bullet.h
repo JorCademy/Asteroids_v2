@@ -10,20 +10,19 @@ namespace Tmpl8
 	public:
 		Bullet();
 		Bullet(int object_x, int object_y, float objectRotation);
+		~Bullet();
 		void virtual DrawSprite(Surface* screen, char* fileName, int bulletPosition_x, int bulletPosition_y);
 		void virtual SetEqualToObject(int object_x, int object_y, int objectRotation);
 		void virtual ShootBullet(Surface* screen, int speed, int object_x, int object_y, int objectRotation, bool shootObjectBullet);
-		// bool CheckOutOfFrame(int bulletPosition_x, int bulletPosition_y);
 		void CheckCollision();
 
+		bool m_hitByEnemyShip;
+		bool m_hitByAsteroid;
+
+	private:
 		bool m_playerBulletOutOfFrame;
-		int m_bulletPosition_x;
-		int m_bulletPosition_y;
 		int m_player_x;
 		int m_player_y;
 		int m_player_rotation;
-		float m_bulletRotation;
-		bool m_hitByEnemyShip;
-		bool m_hitByAsteroid;
 	};
 };

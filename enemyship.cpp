@@ -6,20 +6,22 @@
 
 namespace Tmpl8
 {
-	bool move = false;
-	bool leftSide = false;
-	bool upperSide = false;
+	static Sprite s_enemyShipSprite(new Surface("assets/enemy-ship.png"), 1);
 
-	static Sprite enemyShipSprite(new Surface("assets/enemy-ship.png"), 1);
- 
-	enum optional_positions_x { LEFT = -40, RIGHT = 840 };
-	enum optional_positions_y { UPPER_SIDE = 150, LOWER_SIDE = 350 };
+	EnemyShip::EnemyShip(float speed) :
+		m_speed(speed)
+	{
+		m_HEIGHT = 20;
+		m_WIDTH = 40;
+	}
+
+	EnemyShip::~EnemyShip() { }
 
 	int EnemyShip::GetStarting_X()
 	{
 		int startingPosition_x;
 
-		if (!leftSide)
+		if (!m_leftSide)
 		{
 			startingPosition_x = RIGHT;
 		}
@@ -35,7 +37,7 @@ namespace Tmpl8
 	{
 		int startingPosition_y;
 
-		if (!upperSide)
+		if (!m_upperSide)
 		{
 			startingPosition_y = LOWER_SIDE;
 		}
@@ -49,23 +51,16 @@ namespace Tmpl8
 	   
 	void EnemyShip::DrawSprite(Surface* screen) 
 	{
-		enemyShipSprite.Draw(screen, m_position_x, m_position_y);
+		s_enemyShipSprite.Draw(screen, m_position_x, m_position_y);
 	}
 
-	/*
-	Maybe it's  smart to divide some parts of this function in multiple 
-	member functions, to make the code cleaner, easier to read.
-	Also, it might be smart to make the positioning of the enemy, using the 
-	variables leftSide and upperSide, more random. IE by using the score of the player
-	in combination with modulus ( if ((score_player % 10) == 0) )
-	*/
 	void EnemyShip::Movement()
 	{
-		if (startMoving)
+		if (m_startMoving)
 		{
 			if (!CheckOutOfFrame(m_position_x, m_position_y, m_outOfFrame))
 			{
-				if (leftSide && upperSide && !CheckOutOfFrame(m_position_x, m_position_y, m_outOfFrame))
+				if (m_leftSide && m_upperSide && !CheckOutOfFrame(m_position_x, m_position_y, m_outOfFrame))
 				{
 					m_position_x += m_speed;
 
@@ -74,7 +69,7 @@ namespace Tmpl8
 						m_position_y += m_speed;
 					}
 				}
-				else if (!leftSide && !upperSide && !CheckOutOfFrame(m_position_x, m_position_y, m_outOfFrame))
+				else if (!m_leftSide && !m_upperSide && !CheckOutOfFrame(m_position_x, m_position_y, m_outOfFrame))
 				{
 					m_position_x -= m_speed;
 
@@ -86,35 +81,35 @@ namespace Tmpl8
 			}
 			else if (CheckOutOfFrame(m_position_x, m_position_y, m_outOfFrame))
 			{
-				if (leftSide == true)
+				if (m_leftSide == true)
 				{
-					leftSide = false;
+					m_leftSide = false;
 				}
 				else
 				{
-					leftSide = true;
+					m_leftSide = true;
 				}
 
-				if (upperSide == true)
+				if (m_upperSide == true)
 				{
-					upperSide = false;
+					m_upperSide = false;
 				}
 				else
 				{
-					upperSide = true;
+					m_upperSide = true;
 				}
 
 				m_position_x = GetStarting_X();
 				m_position_y = GetStarting_Y();
 
-				startMoving = false;
+				m_startMoving = false;
 			}
 		}
 	}
 
 	bool EnemyShip::CollisionDetection(int object_x, int object_y, int objectWidth, int objectHeight)
 	{
-		collisionDetected = false;
+		m_collisionDetected = false;
 
 		int enemyship_x_min = m_position_x;
 		int enemyship_x_max = m_position_x + m_WIDTH;
@@ -128,38 +123,49 @@ namespace Tmpl8
 
 		if (!((enemyship_x_max < player_x_min || enemyship_x_min > player_x_max) || ((enemyship_y_max < player_y_min) || (enemyship_y_min > player_y_max))))
 		{
-			collisionDetected = true;
+			m_collisionDetected = true;
 		}
 
-		return collisionDetected;
+		return m_collisionDetected;
 	}
 
 	void EnemyShip::HitByPlayer()
 	{
-		if (collisionDetected)
+		if (m_collisionDetected)
 		{
-			if (leftSide == true)
+			if (m_leftSide == true)
 			{
-				leftSide = false;
+				m_leftSide = false;
 			}
 			else
 			{
-				leftSide = true;
+				m_leftSide = true;
 			}
 
-			if (upperSide == true)
+			if (m_upperSide == true)
 			{
-				upperSide = false;
+				m_upperSide = false;
 			}
 			else
 			{
-				upperSide = true;
+				m_upperSide = true;
 			}
 
 			m_position_x = GetStarting_X();
 			m_position_y = GetStarting_Y();
 
-			startMoving = false;
+			m_startMoving = false;
 		}
+	}
+
+	void EnemyShip::Reset()
+	{
+		m_leftSide = false;
+		m_upperSide = false;
+
+		m_position_x = RIGHT;
+		m_position_y = LOWER_SIDE;
+
+		m_startMoving = false;
 	}
 }

@@ -6,32 +6,31 @@
 
 namespace Tmpl8
 {
-	/*
-	When implementing the EnemyShip class using inheritance, I noticed 
-	that all of the objects within Asteroids contain certain properties, 
-	like movement, collision detection and boundary checking. I think it 
-	would be a great idea to create an Entity class, which contains all 
-	those properties (member functions), which the other classes can inherit.s
-	*/
 	class EnemyShip : public GameObject
 	{
 	public:
+		EnemyShip(float speed);
+		~EnemyShip();
 		int GetStarting_X();
 		int GetStarting_Y();
 		void virtual DrawSprite(Surface* screen);
 		void virtual Movement();
 		bool virtual CollisionDetection(int player_x, int player_y, int playerWidth, int playerHeight);
 		void virtual HitByPlayer();
+		virtual void Reset();
 
 		int m_speed;
-		bool startMoving = false;
-		bool collisionDetected = false;
+		bool m_startMoving = false;
+		bool m_collisionDetected = false;
 		int m_position_x = GetStarting_X();
 		int m_position_y = GetStarting_Y();
 
 	private:
+		enum m_optional_positions_x { LEFT = -40, RIGHT = 840 };
+		enum m_optional_positions_y { UPPER_SIDE = 150, LOWER_SIDE = 350 };
+		bool m_move = false;
+		bool m_leftSide = false;
+		bool m_upperSide = false;
 		bool m_outOfFrame;
-		const int m_HEIGHT = 20;
-		const int m_WIDTH = 40;
 	};
 }

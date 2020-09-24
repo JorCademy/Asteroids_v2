@@ -14,18 +14,24 @@ namespace Tmpl8 {
 		void MouseMove(int x, int y) { /* implement if you want to detect mouse movement */ }
 		void KeyUp(int key);
 		void KeyDown(int key);
-		void Start(Surface* screen, float deltaTime);
+		void PlayGame(Surface* screen, float deltaTime);
 		void DisplayScore(Surface* screen);
 		void DrawAsteroids();
 		void TimerManagement();
 		void CollisionCheck();
-		void GameOver(Surface* screen, float deltaTime);
-		void Reset(Surface* screen);
+		void StartMenu();
+		void GameOver(Surface* screen);
+		void Reset();
 
 	private:
 		SDL_Event event;
 		Surface* screen;
+		Font* asteroidsFont = new Font("assets/asteroids-font.png", "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890:!");
 		bool m_GameOver = false;
+		bool m_StartMenu = true;
+		bool m_shootPlayerBullet = false;
+		bool m_shootEnemyBullet = false;
+		int m_timer = 0;
 	};
 
 }; // namespace Tmpl8

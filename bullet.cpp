@@ -14,37 +14,39 @@ namespace Tmpl8
 		m_player_rotation(objectRotation)
 	{}
 
+	Bullet::~Bullet() {}
+
 	void Bullet::DrawSprite(Surface* screen, char* fileName, int bulletPosition_x, int bulletPosition_y)
 	{
-		static Sprite bullet(new Surface(fileName), 1);
+		static Sprite s_bullet(new Surface(fileName), 1);
 
-		bullet.Draw(screen, bulletPosition_x, bulletPosition_y);
+		s_bullet.Draw(screen, bulletPosition_x, bulletPosition_y);
 	}
 
 	void Bullet::SetEqualToObject(int object_x, int object_y, int objectRotation)
 	{
-		m_bulletPosition_x = object_x;
-		m_bulletPosition_y = object_y;
-		m_bulletRotation = objectRotation;
+		m_position_x = object_x;
+		m_position_y = object_y;
+		m_rotation = objectRotation;
 	}
 
 	void Bullet::ShootBullet(Surface* screen, int speed, int object_x, int object_y, int objectRotation, bool shootObjectBullet)
 	{
 		if (shootObjectBullet == false)
 		{
-			m_bulletPosition_x += sin(m_bulletRotation * 10 * (PI / 180)) * speed;
-			m_bulletPosition_y -= cos(m_bulletRotation * 10 * (PI / 180)) * speed;
+			m_position_x += sin(m_rotation * 10 * (PI / 180)) * speed;
+			m_position_y -= cos(m_rotation * 10 * (PI / 180)) * speed;
 		}
-		else if (shootObjectBullet == true && this->CheckOutOfFrame(m_bulletPosition_x, m_bulletPosition_y, m_playerBulletOutOfFrame) == false)
+		else if (shootObjectBullet == true && this->CheckOutOfFrame(m_position_x, m_position_y, m_playerBulletOutOfFrame) == false)
 		{
-			m_bulletPosition_x += sin(m_bulletRotation * 10 * (PI / 180)) * speed;
-			m_bulletPosition_y -= cos(m_bulletRotation * 10 * (PI / 180)) * speed;
+			m_position_x += sin(m_rotation * 10 * (PI / 180)) * speed;
+			m_position_y -= cos(m_rotation * 10 * (PI / 180)) * speed;
 		}
-		else if (shootObjectBullet == true && this->CheckOutOfFrame(m_bulletPosition_x, m_bulletPosition_y, m_playerBulletOutOfFrame) == true)
+		else if (shootObjectBullet == true && this->CheckOutOfFrame(m_position_x, m_position_y, m_playerBulletOutOfFrame) == true)
 		{
 			this->SetEqualToObject(object_x, object_y, objectRotation);
-			m_bulletPosition_x += 0;
-			m_bulletPosition_y -= 0;
+			m_position_x += 0;
+			m_position_y -= 0;
 		}
 	}
 
@@ -52,9 +54,7 @@ namespace Tmpl8
 	{
 		if (m_hitByEnemyShip || m_hitByAsteroid)
 		{
-			m_bulletPosition_x = m_player_x;
-			m_bulletPosition_y = m_player_y;
-			m_bulletRotation = m_player_rotation;
+			this->SetEqualToObject(m_player_x, m_player_y, m_player_rotation);
 		}
 
 		m_hitByAsteroid = false;

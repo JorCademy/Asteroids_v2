@@ -4,19 +4,22 @@
 
 namespace Tmpl8
 {
-	static Sprite playerSprite(new Surface("assets/player-ship-sheet.png"), 36);
-	static int frame = 0;
+	PlayerShip::PlayerShip(float speed) :
+		m_speed(speed)
+	{}
+
+	PlayerShip::~PlayerShip() {}
 
 	void PlayerShip::DrawLives(Surface* screen)
 	{
-		static Sprite referencedPlayerSprite(new Surface("assets/player-ship-sheet.png"), 36);
+		static Sprite s_referencedPlayerSprite(new Surface("assets/player-ship-sheet.png"), 36);
 
 		int sprite_x = 20;
-		int sprite_y = 10;
+		int sprite_y = 50;
 
 		for (int i = 0; i < m_lives; i++)
 		{
-			referencedPlayerSprite.Draw(screen, sprite_x, sprite_y);
+			s_referencedPlayerSprite.Draw(screen, sprite_x, sprite_y);
 			sprite_x += 30;
 		}
 
@@ -75,33 +78,45 @@ namespace Tmpl8
 			m_position_y += 0;
 		}
 
-		if (m_rotatingToRight) {
-			if (--frame == -1)
+		if (m_rotatingToRight) 
+		{
+			if (--m_frame == -1)
 			{
-				frame = 35;
+				m_frame = 35;
 			}
 
 			++m_frameForRotation* m_speed;
 		}
 		else if (m_rotatingToLeft)
 		{
-			if (++frame == 36)
+			if (++m_frame == 36)
 			{
-				frame = 0;
+				m_frame = 0;
 			}
 
 			--m_frameForRotation* m_speed;
 		}
 		else
 		{
-			frame += 0;
+			m_frame += 0;
 			m_frameForRotation += 0;
 		}
 	}
 
 	void PlayerShip::DrawSprite(Surface* screen)
 	{
-		playerSprite.SetFrame(frame);
-		playerSprite.Draw(screen, m_position_x, m_position_y);
+		static Sprite s_playerSprite(new Surface("assets/player-ship-sheet.png"), 36);
+
+		s_playerSprite.SetFrame(m_frame);
+
+		s_playerSprite.Draw(screen, m_position_x, m_position_y);
+	}
+
+	void PlayerShip::Reset()
+	{
+		m_position_x = m_START_X;
+		m_position_y = m_START_Y;
+
+		m_lives = 3;
 	}
 };
